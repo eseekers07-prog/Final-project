@@ -1,0 +1,83 @@
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  isolation: isolate;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: -24px;
+  z-index: -2;
+  pointer-events: none;
+  background:
+    linear-gradient(120deg, rgba(15, 23, 42, 0.08), rgba(20, 184, 166, 0.12), rgba(79, 70, 229, 0.10)),
+    url("https://images.unsplash.com/photo-1630438994394-3deff7a591bf?auto=format&fit=crop&fm=jpg&q=85&w=2400") center / cover no-repeat;
+  opacity: 0.16;
+  transform: scale(1.03);
+  animation: clinicBgDrift 24s ease-in-out infinite alternate;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 15% 20%, rgba(20, 184, 166, 0.11), transparent 28%),
+    radial-gradient(circle at 85% 8%, rgba(99, 102, 241, 0.10), transparent 25%),
+    linear-gradient(180deg, rgba(248, 250, 252, 0.86), rgba(248, 250, 252, 0.96));
+}
+
+.surface-rise {
+  animation: surfaceRise 620ms cubic-bezier(.2,.8,.2,1) both;
+}
+
+.product-reveal {
+  animation: productReveal 520ms cubic-bezier(.2,.8,.2,1) both;
+}
+
+@keyframes clinicBgDrift {
+  from {
+    transform: scale(1.03) translate3d(-10px, -6px, 0);
+  }
+  to {
+    transform: scale(1.09) translate3d(12px, 10px, 0);
+  }
+}
+
+@keyframes surfaceRise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes productReveal {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+}

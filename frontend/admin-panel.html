@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pet Care Management System | Admin Panel</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="./assets/css/theme.css" />
+  <style>
+    .sidebar-collapsed aside { width: 5.5rem; }
+    .sidebar-collapsed .brand-copy, .sidebar-collapsed nav span, .sidebar-collapsed #userBadge { display: none; }
+    .admin-tab-panel { display: none; }
+    .admin-tab-panel.active { display: block; animation: panelIn .32s ease both; }
+    .admin-tab.active { background: #0f172a; color: #fff; }
+    @keyframes panelIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-950 antialiased">
+  <div id="appLayout" class="flex min-h-screen">
+    <aside class="w-72 shrink-0 bg-slate-950 p-5 text-white transition-all duration-300">
+      <div class="mb-8 flex items-center gap-3">
+        <div class="flex h-11 w-11 items-center justify-center rounded-lg bg-teal-300 text-slate-950">
+          <i data-lucide="stethoscope" class="h-6 w-6"></i>
+        </div>
+        <div class="brand-copy">
+          <p class="text-xs uppercase tracking-[0.28em] text-teal-200">Pet Care</p>
+          <h1 class="text-lg font-semibold">Management System</h1>
+        </div>
+      </div>
+      <nav id="sidebarNav" class="space-y-2"></nav>
+      <div class="mt-8 rounded-lg border border-white/10 bg-white/10 p-4" id="userBadge"></div>
+    </aside>
+
+    <main class="flex-1 overflow-hidden">
+      <header class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 bg-white px-6 py-4">
+        <div class="flex items-center gap-3">
+          <button id="sidebarToggle" class="rounded-lg border border-slate-200 p-2 transition-all duration-300 hover:bg-slate-100" aria-label="Toggle sidebar">
+            <i data-lucide="panel-left-close" class="h-5 w-5"></i>
+          </button>
+          <div>
+            <p class="text-sm font-semibold uppercase tracking-[0.22em] text-indigo-700">System Control</p>
+            <h2 class="text-2xl font-semibold">Admin Panel</h2>
+          </div>
+        </div>
+        <div class="flex items-center gap-3">
+          <button data-admin-add="owner" class="flex items-center gap-2 rounded-lg bg-teal-600 px-4 py-2 text-sm font-semibold text-white transition-all duration-300 hover:bg-slate-950">
+            <i data-lucide="user-plus" class="h-4 w-4"></i> Add Owner
+          </button>
+          <button id="logoutBtn" class="rounded-lg bg-slate-950 px-4 py-2 text-sm font-semibold text-white transition-all duration-300 hover:bg-indigo-900">Logout</button>
+        </div>
+      </header>
+
+      <section class="space-y-6 p-6">
+        <div class="grid gap-4 md:grid-cols-4 xl:grid-cols-7">
+          <article class="rounded-lg border border-slate-200 bg-white p-4 shadow-sm"><p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Users</p><div id="admin-stat-users" class="mt-2 text-3xl font-semibold">0</div></article>
+          <article class="rounded-lg border border-slate-200 bg-white p-4 shadow-sm"><p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Owners</p><div id="admin-stat-owners" class="mt-2 text-3xl font-semibold">0</div></article>
+          <article class="rounded-lg border border-slate-200 bg-white p-4 shadow-sm"><p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Vets</p><div id="admin-stat-vets" class="mt-2 text-3xl font-semibold">0</div></article>
+          <article class="rounded-lg border border-slate-200 bg-white p-4 shadow-sm"><p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Pets</p><div id="admin-stat-pets" class="mt-2 text-3xl font-semibold">0</div></article>
+          <article class="rounded-lg border border-slate-200 bg-white p-4 shadow-sm"><p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Appointments</p><div id="admin-stat-appts" class="mt-2 text-3xl font-semibold">0</div></article>
+          <article class="rounded-lg border border-slate-200 bg-white p-4 shadow-sm"><p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Records</p><div id="admin-stat-records" class="mt-2 text-3xl font-semibold">0</div></article>
+          <article class="rounded-lg border border-slate-200 bg-white p-4 shadow-sm"><p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-500">Revenue</p><div id="admin-stat-revenue" class="mt-2 text-2xl font-semibold text-teal-700">$0.00</div></article>
+        </div>
+
+        <div class="rounded-lg border border-slate-200 bg-white p-2 shadow-sm">
+          <div class="flex flex-wrap gap-2">
+            <button class="admin-tab active rounded-lg px-4 py-2 text-sm font-bold transition-all duration-300 hover:bg-slate-950 hover:text-white" data-admin-tab="users">Users</button>
+            <button class="admin-tab rounded-lg px-4 py-2 text-sm font-bold transition-all duration-300 hover:bg-slate-950 hover:text-white" data-admin-tab="owners">Pet Owners</button>
+            <button class="admin-tab rounded-lg px-4 py-2 text-sm font-bold transition-all duration-300 hover:bg-slate-950 hover:text-white" data-admin-tab="vets">Veterinarians</button>
+            <button class="admin-tab rounded-lg px-4 py-2 text-sm font-bold transition-all duration-300 hover:bg-slate-950 hover:text-white" data-admin-tab="pets">Pets</button>
+            <button class="admin-tab rounded-lg px-4 py-2 text-sm font-bold transition-all duration-300 hover:bg-slate-950 hover:text-white" data-admin-tab="appointments">Appointments</button>
+            <button class="admin-tab rounded-lg px-4 py-2 text-sm font-bold transition-all duration-300 hover:bg-slate-950 hover:text-white" data-admin-tab="records">Health Records</button>
+            <button class="admin-tab rounded-lg px-4 py-2 text-sm font-bold transition-all duration-300 hover:bg-slate-950 hover:text-white" data-admin-tab="invoices">Invoices</button>
+          </div>
+        </div>
+
+        <section id="panel-users" class="admin-tab-panel active rounded-lg border border-slate-200 bg-white shadow-sm">
+          <div class="border-b border-slate-200 px-5 py-4"><h3 class="text-lg font-semibold">Users & Access</h3></div>
+          <div class="overflow-x-auto"><table id="admin-users-table" class="w-full min-w-[920px] text-left text-sm"><thead class="bg-slate-50 text-xs uppercase tracking-[0.16em] text-slate-500"><tr><th class="px-4 py-3">User</th><th class="px-4 py-3">Email</th><th class="px-4 py-3">Role</th><th class="px-4 py-3">Status</th><th class="px-4 py-3 text-right">Action</th></tr></thead><tbody></tbody></table></div>
+        </section>
+
+        <section id="panel-owners" class="admin-tab-panel rounded-lg border border-slate-200 bg-white shadow-sm">
+          <div class="flex items-center justify-between gap-3 border-b border-slate-200 px-5 py-4"><h3 class="text-lg font-semibold">Pet Owners</h3><button data-admin-add="owner" class="inline-flex items-center gap-2 rounded-lg bg-slate-950 px-3 py-2 text-sm font-bold text-white"><i data-lucide="plus" class="h-4 w-4"></i>Add</button></div>
+          <div class="overflow-x-auto"><table id="admin-owners-table" class="w-full min-w-[920px] text-left text-sm"><thead class="bg-slate-50 text-xs uppercase tracking-[0.16em] text-slate-500"><tr><th class="px-4 py-3">Name</th><th class="px-4 py-3">Email</th><th class="px-4 py-3">Phone</th><th class="px-4 py-3">Address</th><th class="px-4 py-3 text-right">Action</th></tr></thead><tbody></tbody></table></div>
+        </section>
+
+        <section id="panel-vets" class="admin-tab-panel rounded-lg border border-slate-200 bg-white shadow-sm">
+          <div class="flex items-center justify-between gap-3 border-b border-slate-200 px-5 py-4"><h3 class="text-lg font-semibold">Veterinarians</h3><button data-admin-add="vet" class="inline-flex items-center gap-2 rounded-lg bg-slate-950 px-3 py-2 text-sm font-bold text-white"><i data-lucide="plus" class="h-4 w-4"></i>Add</button></div>
+          <div class="overflow-x-auto"><table id="admin-vets-table" class="w-full min-w-[920px] text-left text-sm"><thead class="bg-slate-50 text-xs uppercase tracking-[0.16em] text-slate-500"><tr><th class="px-4 py-3">Name</th><th class="px-4 py-3">Email</th><th class="px-4 py-3">Phone</th><th class="px-4 py-3">Address</th><th class="px-4 py-3 text-right">Action</th></tr></thead><tbody></tbody></table></div>
+        </section>
+
+        <section id="panel-pets" class="admin-tab-panel rounded-lg border border-slate-200 bg-white shadow-sm">
+          <div class="flex items-center justify-between gap-3 border-b border-slate-200 px-5 py-4"><h3 class="text-lg font-semibold">Pets</h3><button data-admin-add="pet" class="inline-flex items-center gap-2 rounded-lg bg-slate-950 px-3 py-2 text-sm font-bold text-white"><i data-lucide="plus" class="h-4 w-4"></i>Add</button></div>
+          <div class="overflow-x-auto"><table id="admin-pets-table" class="w-full min-w-[820px] text-left text-sm"><thead class="bg-slate-50 text-xs uppercase tracking-[0.16em] text-slate-500"><tr><th class="px-4 py-3">Pet</th><th class="px-4 py-3">Species</th><th class="px-4 py-3">Breed</th><th class="px-4 py-3">Owner</th><th class="px-4 py-3 text-right">Action</th></tr></thead><tbody></tbody></table></div>
+        </section>
+
+        <section id="panel-appointments" class="admin-tab-panel rounded-lg border border-slate-200 bg-white shadow-sm">
+          <div class="flex items-center justify-between gap-3 border-b border-slate-200 px-5 py-4"><h3 class="text-lg font-semibold">Appointments</h3><button data-admin-add="appointment" class="inline-flex items-center gap-2 rounded-lg bg-slate-950 px-3 py-2 text-sm font-bold text-white"><i data-lucide="plus" class="h-4 w-4"></i>Add</button></div>
+          <div class="overflow-x-auto"><table id="admin-appointments-table" class="w-full min-w-[920px] text-left text-sm"><thead class="bg-slate-50 text-xs uppercase tracking-[0.16em] text-slate-500"><tr><th class="px-4 py-3">Pet</th><th class="px-4 py-3">Veterinarian</th><th class="px-4 py-3">Scheduled</th><th class="px-4 py-3">Status</th><th class="px-4 py-3 text-right">Action</th></tr></thead><tbody></tbody></table></div>
+        </section>
+
+        <section id="panel-records" class="admin-tab-panel rounded-lg border border-slate-200 bg-white shadow-sm">
+          <div class="flex items-center justify-between gap-3 border-b border-slate-200 px-5 py-4"><h3 class="text-lg font-semibold">Health Records</h3><button data-admin-add="health_record" class="inline-flex items-center gap-2 rounded-lg bg-slate-950 px-3 py-2 text-sm font-bold text-white"><i data-lucide="plus" class="h-4 w-4"></i>Add</button></div>
+          <div class="overflow-x-auto"><table id="admin-records-table" class="w-full min-w-[920px] text-left text-sm"><thead class="bg-slate-50 text-xs uppercase tracking-[0.16em] text-slate-500"><tr><th class="px-4 py-3">Visit</th><th class="px-4 py-3">Pet</th><th class="px-4 py-3">Veterinarian</th><th class="px-4 py-3">Finding</th><th class="px-4 py-3 text-right">Action</th></tr></thead><tbody></tbody></table></div>
+        </section>
+
+        <section id="panel-invoices" class="admin-tab-panel rounded-lg border border-slate-200 bg-white shadow-sm">
+          <div class="flex items-center justify-between gap-3 border-b border-slate-200 px-5 py-4"><h3 class="text-lg font-semibold">Invoices</h3><button data-admin-add="invoice" class="inline-flex items-center gap-2 rounded-lg bg-slate-950 px-3 py-2 text-sm font-bold text-white"><i data-lucide="plus" class="h-4 w-4"></i>Add</button></div>
+          <div class="overflow-x-auto"><table id="admin-invoices-table" class="w-full min-w-[820px] text-left text-sm"><thead class="bg-slate-50 text-xs uppercase tracking-[0.16em] text-slate-500"><tr><th class="px-4 py-3">Invoice</th><th class="px-4 py-3">Pet</th><th class="px-4 py-3">Amount</th><th class="px-4 py-3">Status</th><th class="px-4 py-3 text-right">Action</th></tr></thead><tbody></tbody></table></div>
+        </section>
+      </section>
+    </main>
+  </div>
+
+  <div id="notice" class="hidden"></div>
+  <div id="adminModalMount"></div>
+
+  <script type="module">
+    import { initAdminPanel } from './assets/js/main.js';
+
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('[data-admin-tab]').forEach((button) => {
+        button.addEventListener('click', () => {
+          document.querySelectorAll('.admin-tab').forEach((tab) => tab.classList.remove('active'));
+          document.querySelectorAll('.admin-tab-panel').forEach((panel) => panel.classList.remove('active'));
+          button.classList.add('active');
+          document.getElementById(`panel-${button.dataset.adminTab}`).classList.add('active');
+        });
+      });
+
+      initAdminPanel();
+    });
+  </script>
+</body>
+</html>
