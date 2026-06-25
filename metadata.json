@@ -1,6 +1,0 @@
-{
-  "name": "Pet Care Management System",
-  "description": "An interactive Material Design Android application simulation for managing pets, appointments, health records, prescriptions, and clinic billing.",
-  "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
-}
